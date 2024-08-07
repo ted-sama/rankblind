@@ -13,5 +13,10 @@ export default defineNuxtConfig({
      * @default "./components/ui"
      */
     componentDir: './components/ui'
-  }
+  },
+  runtimeConfig: {
+      public: {
+        rankblindApi: process.env.NUXT_PUBLIC_RANKBLIND_API
+      }
+  },
 })

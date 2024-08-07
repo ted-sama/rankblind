@@ -16,21 +16,21 @@ declare global {
     interface ThemeItem {
         id: number;
         themeId: number;
-        name: string | undefined;
-        image: string | undefined;
+        name: string | null;
+        image: string | null;
     }
 
     interface PendingCreated {
-        themeId: number | undefined;
+        themeId: number;
         tempId: number;
-        name: string | undefined;
-        image: string | undefined;
+        name: string;
+        image: File | null;
     }
 
     interface PendingUpdated {
         itemId: number;
-        name: string | undefined;
-        image: string | undefined;
+        name: string | null;
+        image: File | null;
     }
 
     interface ModifiedThemeData {
