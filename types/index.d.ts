@@ -9,6 +9,8 @@ declare global {
     interface Theme {
         id: number;
         name: string;
+        description: string | null;
+        image: string;
         maxRanking: number;
         themeItems: ThemeItem[];
     }

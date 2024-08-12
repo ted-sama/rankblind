@@ -1,6 +1,5 @@
 <template>
   <div>
-    <h1 class="text-3xl mb-12">{{ themeData.name }}</h1>
       <div class="grid grid-cols-2">
         <div class="flex flex-col gap-6 font-nunito">
           <div class="flex gap-6" v-for="(position, i) in sessionData">
@@ -66,6 +65,7 @@ const rank = (index: number, value: any) => {
 
   sessionData.value[index].value = value;
   themeData.themeItems.splice(0, 1);
+  shuffleArray(themeData.themeItems);
   console.log(sessionData.value);
   // startShuffle(themeData.themeItems);
 }
@@ -78,6 +78,9 @@ const initializeData = () => {
       value: null,
     });
   }
+
+  // On mélange les éléments du thème
+  shuffleArray(themeData.themeItems);
 }
 
 const startShuffle = (array: any) => {
