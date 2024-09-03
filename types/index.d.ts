@@ -40,4 +40,22 @@ declare global {
         updated: PendingUpdated[]
         deleted: number[]
     }
+
+    interface NewTheme {
+        id: number;
+        name: string;
+        description: string | null;
+        imageUrl: string;
+        imageFile: File | null;
+        maxRanking: number;
+        themeItems: NewThemeItem[];
+    }
+
+    interface NewThemeItem {
+        id: number;
+        themeId: number;
+        name: string | null;
+        imageUrl: string | null;
+        imageFile: File | null;
+    }
 }

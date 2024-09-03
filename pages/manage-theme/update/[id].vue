@@ -1,45 +1,62 @@
 <template>
   <div>
     <div v-if="themeData">
-      <h1 class="text-3xl mb-12">Modifier un thème: {{ themeData.name }}</h1>
+      <h1 class="text-3xl mb-12">Modifier un thème</h1>
       <div class="flex flex-col gap-4" v-if="tempThemeData">
-        <div v-if="tempThemeData.image !== '' || tempThemeData.image !== null">
-          <label for="fileInput-theme" class="relative">
-            <img
-              :src="tempThemeData.image"
-              class="w-[200px] h-[200px] object-cover rounded-md cursor-pointer"
-              alt=""
+        <div class="flex gap-6">
+          <div>
+            <div
+              v-if="tempThemeData.image !== '' || tempThemeData.image !== null"
+            >
+              <label for="fileInput-theme" class="relative">
+                <img
+                  :src="tempThemeData.image"
+                  class="w-[200px] h-[200px] object-cover rounded-md cursor-pointer"
+                  alt=""
+                />
+                <div
+                  class="absolute top-0 left-0 w-[200px] h-[200px] bg-black bg-opacity-50 opacity-0 rounded-md flex items-center justify-center cursor-pointer hover:opacity-100"
+                >
+                  <LucidePencil class="w-8 h-8 text-white" />
+                </div>
+              </label>
+            </div>
+            <div v-else>
+              <label for="fileInput-theme" class="relative">
+                <div
+                  class="w-[200px] h-[200px] bg-gray-200 rounded-md flex items-center justify-center cursor-pointer"
+                >
+                  <LucidePlus class="w-8 h-8 text-gray-400" />
+                </div>
+              </label>
+            </div>
+            <input
+              id="fileInput-theme"
+              type="file"
+              class="hidden"
+              @change="uploadThemeImage"
+              accept="image/jpeg, image/jpg, image/png, image/webp"
             />
-            <div
-              class="absolute top-0 left-0 w-[200px] h-[200px] bg-black bg-opacity-50 opacity-0 rounded-md flex items-center justify-center cursor-pointer hover:opacity-100"
-            >
-              <LucidePencil class="w-8 h-8 text-white" />
-            </div>
-          </label>
+          </div>
+          <div class="flex flex-col justify-center">
+            <h2 class="text-3xl mb-2">{{ themeData.name }}</h2>
+            <p>De: Ted</p>
+            <p>{{ themeData.description }}</p>
+          </div>
         </div>
-        <div v-else>
-          <label for="fileInput-theme" class="relative">
-            <div
-              class="w-[200px] h-[200px] bg-gray-200 rounded-md flex items-center justify-center cursor-pointer"
-            >
-              <LucidePlus class="w-8 h-8 text-gray-400" />
-            </div>
-          </label>
-        </div>
-        <input
-          id="fileInput-theme"
-          type="file"
-          class="hidden"
-          @change="uploadThemeImage"
-          accept="image/jpeg, image/jpg, image/png, image/webp"
-        />
         <div>
           <Label for="name">Nom du thème</Label>
-          <Input type="text" id="name" v-model="tempThemeData.name" />
+          <Input
+            class="w-96"
+            type="text"
+            id="name"
+            v-model="tempThemeData.name"
+          />
         </div>
         <div>
           <Label for="description">Description</Label>
           <Textarea
+            class="w-96"
             placeholder="Entrez une description"
             id="description"
             v-model="tempThemeData.description"
@@ -48,6 +65,7 @@
         <div>
           <Label for="maxRanking">Nombre de places</Label>
           <Input
+            class="w-12"
             type="number"
             min="3"
             max="10"
@@ -97,12 +115,18 @@
                 <LucideTrash2 class="w-4 h-4" />
               </Button>
             </div>
-            <Button @click="createItem">
-              <LucidePlus class="w-4 h-4" />
-            </Button>
+            <div class="w-[100px]">
+              <Button class="w-full" @click="createItem">
+                <LucidePlus class="w-4 h-4" />
+              </Button>
+            </div>
           </div>
         </div>
-        <Button @click="saveChanges" :disabled="saveButtonDisabled"> Enregistrer </Button>
+        <div class="flex justify-end">
+            <Button class="text-end w-96 mt-10" @click="saveChanges" :disabled="saveButtonDisabled">
+          Enregistrer
+        </Button>
+        </div>
       </div>
     </div>
   </div>
@@ -132,7 +156,7 @@ const modifiedItems = ref<ModifiedThemeData>({
 
 const saveButtonDisabled = computed(() => {
   return JSON.stringify(themeData) === JSON.stringify(tempThemeData.value);
-}); 
+});
 
 const maxRanking = ref<number | undefined>(themeData.maxRanking);
 
@@ -158,7 +182,7 @@ const deleteItem = (id: number) => {
 };
 
 const createItem = () => {
-  const tempId = Math.floor(Math.random() * 1000); // On génère un id aléatoire pour l'élément créé (on ne peut pas utiliser la longueur du tableau car on peut supprimer des éléments)
+  const tempId = Date.now(); // On génère un id aléatoire pour l'élément créé (on ne peut pas utiliser la longueur du tableau car on peut supprimer des éléments)
 
   tempThemeData.value.themeItems.push({
     id: tempId,
@@ -314,7 +338,7 @@ const saveChanges = async () => {
 
     modifiedItems.value.created.forEach((item) => {
       const formData = new FormData();
-      formData.append("themeId", item.themeId.toString());
+      formData.append("theme_id", item.themeId.toString());
       formData.append("name", item.name);
       formData.append("image", item.image as File);
 
@@ -344,8 +368,8 @@ const saveChanges = async () => {
     });
   }
 
-    // On recharge la page pour afficher les modifications
-    location.reload();
+  // On recharge la page pour afficher les modifications
+  location.reload();
 };
 
 onMounted(() => {

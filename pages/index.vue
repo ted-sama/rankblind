@@ -1,15 +1,14 @@
 <template>
     <div>
-      <ThemeList :themes="themes" v-if="themes"/>
-      <NuxtLink to="/manage-theme">Gestion des thèmes</NuxtLink>
+      <ThemeList :themes="themes" :edit-mode="false" v-if="themes"/>
+      <NuxtLink to="/manage-theme">Gérer les thèmes</NuxtLink>
     </div>
   </template>
   
-  <script lang="ts" setup>
-  const { data: themes } = await useFetch<Theme[]>("http://localhost:80/api/themes");
-
-  </script>
+<script lang="ts" setup>
+const themes: Theme[] = await fetchAllThemes();
+</script>
   
-  <style>
+<style>
   
-  </style>
+</style>

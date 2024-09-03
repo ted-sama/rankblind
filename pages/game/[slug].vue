@@ -2,6 +2,7 @@
   <div>
     <div class="mb-16">
       <h1 class="text-3xl mb-2">{{ themeData.name }} - Classement à l'aveugle</h1>
+      <p class="text-lg">De: Ted</p>
       <p class="text-lg">{{ themeData.description }}</p>
     </div>
     <BlindRanking :theme-data="themeData"/>
