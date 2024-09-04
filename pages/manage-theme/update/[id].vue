@@ -65,7 +65,7 @@
         <div>
           <Label for="maxRanking">Nombre de places</Label>
           <Input
-            class="w-12"
+            class="w-24"
             type="number"
             min="3"
             max="10"
