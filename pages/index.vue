@@ -1,6 +1,8 @@
 <template>
     <div>
-      <ThemeList :themes="themes" :edit-mode="false" v-if="themes"/>
+      <client-only>
+        <ThemeList :themes="themes" :edit-mode="false" v-show="themes"/>
+      </client-only>
       <NuxtLink to="/manage-theme">Gérer les thèmes</NuxtLink>
     </div>
   </template>

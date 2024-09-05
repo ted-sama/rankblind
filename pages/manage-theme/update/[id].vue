@@ -325,7 +325,7 @@ const saveChanges = async () => {
     formData.append("image", themeImageToUpload.value as File);
 
     const update = await $fetch(
-      `${config.public.rankblindApi}/themes/${themeData.id}/images`,
+      `${config.public.rankblindApi}/themes/${themeData.id}/image`,
       {
         method: "PUT",
         body: formData,
