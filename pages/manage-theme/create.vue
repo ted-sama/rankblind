@@ -130,6 +130,7 @@
 </template>
 
 <script lang="ts" setup>
+const router = useRouter();
 const config = useRuntimeConfig();
 
 const tempThemeData = ref<NewTheme>({
@@ -144,8 +145,6 @@ const tempThemeData = ref<NewTheme>({
 
 // Récupération de l'image du thème à uploader
 const themeImageToUpload = ref<File>();
-
-const newThemeId = ref<number>(0);
 
 const createItem = () => {
     const newItem = {
@@ -174,7 +173,7 @@ const uploadImage = (id: number, e: any) => {
   tempThemeData.value.themeItems[index].imageFile = e.target.files[0];
 };
 
-const saveChanges = async () => {
+const createTheme = async () => {
   const formData = new FormData();
   formData.append('name', tempThemeData.value.name);
   if (tempThemeData.value.description) {
@@ -186,23 +185,22 @@ const saveChanges = async () => {
   formData.append('max_ranking', tempThemeData.value.maxRanking.toString());
   formData.append('image', themeImageToUpload.value!);
 
-  // post theme then get the id from response
-  // then post themeItems with themeId
-  //PROBLEME ICI------------------------------------------------------------------------------
-  const createTheme = await $fetch(`${config.public.rankblindApi}/themes`, {
+  // On crée le theme et on récupère l'id de la réponse pour les items
+  return await $fetch(`${config.public.rankblindApi}/themes`, {
     method: 'POST',
     body: formData,
-  }).then((res: any) => res.json())
-    .then((data: any) => {
-      newThemeId.value = data.id;
-    })
-    .catch((error: any) => console.error(error))
-   // get the id from response
+  })
+}
 
+const saveChanges = async () => {
+  
+   // On crée le thème et on récupère l'id grâce à la fonction createTheme
+  const newThemeId: any = await createTheme();
 
+  // On crée les items du thème 5, (async ?)
   tempThemeData.value.themeItems.forEach((item) => {
     const itemFormData = new FormData();
-    itemFormData.append('theme_id', newThemeId.value.toString());
+    itemFormData.append('theme_id', newThemeId[0].id.toString());
     if (item.name) {
       itemFormData.append('name', item.name);
     }
@@ -214,13 +212,14 @@ const saveChanges = async () => {
       itemFormData.append('image', item.imageFile);
     }
 
-    const createThemeItem = $fetch(`${config.public.rankblindApi}/theme-items`, {
+    $fetch(`${config.public.rankblindApi}/theme-items`, {
       method: 'POST',
       body: itemFormData,
-    }).then((res: any) => res.json())
-      .then((data: any) => console.log(data))
-      .catch((error: any) => console.error(error));
+    });
   });
+
+  // On redirige vers la page de gestion des thèmes
+  router.push({ path: '/manage-theme' });
 };
 </script>
 

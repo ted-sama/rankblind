@@ -135,6 +135,7 @@
 <script lang="ts" setup>
 const config = useRuntimeConfig();
 const route = useRoute();
+const router = useRouter();
 
 // Récupération des données du thème
 const themeData: Theme = await fetchThemeData(
@@ -369,7 +370,7 @@ const saveChanges = async () => {
   }
 
   // On recharge la page pour afficher les modifications
-  location.reload();
+  router.go(0);
 };
 
 onMounted(() => {
